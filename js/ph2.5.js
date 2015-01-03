@@ -16,14 +16,26 @@ var init = function(){
     }
     today = mm + '/' + dd;
 
+    function getRandomImageId() {
+        var imageIdList = ls[today].split(',');
+        var index = getRandomInt(0, imageIdList.length);
+        return imageIdList[index];
+    }
+
+    function lazyReloadRandomImage() {
+        var pixivEmbedIFrameSrcA = 'http://embed.pixiv.net/embed_mk2.php?id=';
+        var pixivEmbedIFrameSrcZ = '&size=large&border=on&done=null';
+        var pixivEmbedIFrameSrc = pixivEmbedIFrameSrcA + getRandomImageId() + pixivEmbedIFrameSrcZ;
+        $("div.pixiv-embed").find("> iframe").attr('src', pixivEmbedIFrameSrc);
+        setTimeout(lazyReloadRandomImage, 60000);
+    }
+
     function renderRandomImage() {
         var pixivEmbedJsTmplA = '<script src="js/embed.js" data-id="';
         var pixivEmbedJsTmplZ = '" data-size="large" data-border="on" charset="utf-8"></script>';
-        var imageIdList = ls[today].split(',');
-        var index = getRandomInt(0, imageIdList.length);
-        var imageId = imageIdList[index];
+        var imageId = getRandomImageId();
         var embedJSLink = pixivEmbedJsTmplA + imageId + pixivEmbedJsTmplZ;
-        $("body").html(embedJSLink);
+        $("#gallery").html(embedJSLink);
     }
 
     if (ls[today] === undefined) {
@@ -38,12 +50,37 @@ var init = function(){
             if (ls[today].length) {
                 ls[today] = rankingImageItems;
                 renderRandomImage();
+                setTimeout(lazyReloadRandomImage, 60000);
             }
         });
     }
     else {
         renderRandomImage();
+        setTimeout(lazyReloadRandomImage, 60000);
     }
 }
 
 addEventListener('DOMContentLoaded', init);
+
+
+$(document).ready(function(){
+    $("#download-original").on("click", function(){
+        var imageId = $(".pixiv-embed").attr('data-id');
+        if (!imageId) {
+            return;
+        }
+
+        var imagePageUrl = 'http://www.pixiv.net/member_illust.php?mode=medium&illust_id=' + imageId;
+        $.get(imagePageUrl, function(data){
+            var originalElem = $(data).find('img.original-image');
+            if (!originalElem) {
+                alert("原始图片未发现");
+                return;
+            }
+            var originalImageUrl = originalElem.attr("data-src");
+            window.location = originalImageUrl;
+        })
+
+        return false;
+    });
+});
