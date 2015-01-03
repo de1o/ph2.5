@@ -1,0 +1,20 @@
+{
+   "chrome_url_overrides": {
+      "newtab": "pixivhot.html"
+   },
+   "description": "random pictures from pixiv daily rank",
+   "icons": {
+      "256": "ph2.5.png",
+      "128": "ph2.5@0.5x.png",
+      "96": "ph2.5@0.25x.png",
+      "48": "ph2.5@0.125x.png"
+   },
+   "manifest_version": 2,
+   "name": "PH 2.5",
+   "version": "0.1.0",
+   "permissions": [
+    "http://www.pixiv.net/",
+    "http://source.pixiv.net/"
+   ],
+   "content_security_policy": "default_src 'self'; object-src 'self'; script-src 'self' 'unsafe-eval'"
+}
