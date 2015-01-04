@@ -47,8 +47,8 @@ var init = function(){
                 rankingImageItems.push($(this).attr('data-id'));
             });
 
+            ls[today] = rankingImageItems;
             if (ls[today].length) {
-                ls[today] = rankingImageItems;
                 renderRandomImage();
                 setTimeout(lazyReloadRandomImage, 60000);
             }

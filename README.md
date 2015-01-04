@@ -9,3 +9,4 @@ random pixiv hot pictures on your chrome new tab page.
 2.  可以加入国际排行榜的图片
 3.  可以优先展现新上榜的图片
 4.  设计更好的界面
+5.  pin住某一张图片作为当天的背景
